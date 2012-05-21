@@ -1,9 +1,6 @@
 package net.raescott.encryption;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.StringReader;
+import java.io.*;
 import java.security.*;
 import javax.crypto.Cipher;
 import javax.crypto.CipherOutputStream;
@@ -37,11 +34,12 @@ public class App {
 		System.out.println("");
 		Cipher cipher = Cipher.getInstance("RSA");
 		cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-		CipherOutputStream cipherOutputStream = new CipherOutputStream(System.out, cipher);
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		CipherOutputStream cipherOutputStream = new CipherOutputStream(byteArrayOutputStream, cipher);
 		System.out.println("string: " + s);
-		System.out.println("encrypt with public key: ");
 		cipherOutputStream.write(s.getBytes());
 		cipherOutputStream.close();
-
+		String encryptedString = byteArrayOutputStream.toString();
+		System.out.println("encrypt with public key: " + encryptedString);
 	}
 }
