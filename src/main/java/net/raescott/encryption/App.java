@@ -33,6 +33,8 @@ public class App {
 
 		System.out.println("");
 		Cipher cipher = Cipher.getInstance("RSA");
+
+		// Encrypt with public key
 		cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 		CipherOutputStream cipherOutputStream = new CipherOutputStream(byteArrayOutputStream, cipher);
@@ -41,5 +43,31 @@ public class App {
 		cipherOutputStream.close();
 		String encryptedString = byteArrayOutputStream.toString();
 		System.out.println("encrypt with public key: " + encryptedString);
+
+		// Decrypt with private key
+		cipher.init(Cipher.DECRYPT_MODE, privateKey);
+		byteArrayOutputStream.reset();
+		cipherOutputStream.write(encryptedString.getBytes());
+		cipherOutputStream.close();
+		String decryptedString = byteArrayOutputStream.toString();
+		System.out.println("decrypt with private key: " + decryptedString);
+
+		System.out.println("");
+		
+		// Sign with private key
+		cipher.init(Cipher.ENCRYPT_MODE, privateKey);
+		byteArrayOutputStream.reset();
+		cipherOutputStream.write(s.getBytes());
+		cipherOutputStream.close();
+		String signedString = byteArrayOutputStream.toString();
+		System.out.println("sign with private key: " + signedString);
+
+		// Verify digital signature
+		cipher.init(Cipher.DECRYPT_MODE, publicKey);
+		byteArrayOutputStream.reset();
+		cipherOutputStream.write(signedString.getBytes());
+		cipherOutputStream.close();
+		String verifiedString = byteArrayOutputStream.toString();
+		System.out.println("verify digital signature: " + verifiedString);
 	}
 }
