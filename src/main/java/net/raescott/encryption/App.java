@@ -20,6 +20,17 @@ public class App {
 		System.out.println("hashed s: " + DigestUtils.shaHex(s));
 
 		System.out.println("");
+		System.out.println("*** SHA-1 Hash on a file ***");
+		String content1 = fileReader("sample-file1.txt");
+		System.out.println("sample-file1.txt: " + content1);
+		System.out.println("hashed sample-file1.txt: " + DigestUtils.shaHex(content1));
+		System.out.println("hashed sample-file1.txt: " + DigestUtils.shaHex(new FileInputStream("sample-file1.txt")));
+		String content2 = fileReader("sample-file2.txt");
+		System.out.println("sample-file2.txt: " + content2);
+		System.out.println("hashed sample-file2.txt: " + DigestUtils.shaHex(content2));
+		System.out.println("hashed sample-file2.txt: " + DigestUtils.shaHex(new FileInputStream("sample-file2.txt")));
+
+		System.out.println("");
 
 		// RSA-2048 encryption
 		System.out.println("*** RSA-2048 ***");
@@ -69,5 +80,22 @@ public class App {
 		cipherOutputStream.close();
 		String verifiedString = byteArrayOutputStream.toString();
 		System.out.println("verify digital signature: " + verifiedString);
+	}
+
+	public static String fileReader(String fileName) throws IOException {
+		BufferedReader bufferedReader = null;
+		StringBuilder stringBuilder = null;
+		try {
+			bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
+			stringBuilder = new StringBuilder();
+			while (bufferedReader.ready()) {
+				stringBuilder.append(bufferedReader.readLine());
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			bufferedReader.close();
+		}
+		return stringBuilder.toString();
 	}
 }
